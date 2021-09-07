@@ -12,9 +12,9 @@ export enum AccountType {
 }
 
 export enum menuType {
-  BURGER,
-  SALAD,
-  VEGETABLE_RICE,
+  BURGER = 'burger',
+  SALAD = 'salad',
+  VEGETABLE_RICE = 'vegetable rice',
 }
 
 registerEnumType(BurgerSize, {

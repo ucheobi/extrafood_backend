@@ -15,7 +15,7 @@ import { User } from './user.entity';
 @ObjectType()
 export class Order {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field()
   id: number;
 
   @Column()
@@ -23,20 +23,23 @@ export class Order {
   @UpdateDateColumn()
   order_date: Date;
 
-  @Column()
+  @Column('double')
   @Field()
   total_amount: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   info: string;
 
   @ManyToOne(() => User, (user) => user.orders)
+  @Field()
   processed_by: User;
 
   @OneToMany(() => OrderDetails, (order_details) => order_details.order)
+  @Field((type) => [OrderDetails])
   order_details: OrderDetails[];
 
   @ManyToOne(() => Customer, (customer) => customer.order)
+  @Field((type) => Customer)
   customer: Customer;
 }

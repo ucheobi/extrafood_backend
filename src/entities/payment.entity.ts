@@ -2,6 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,7 +14,7 @@ import { User } from './user.entity';
 @ObjectType()
 export class Payment {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field()
   id: number;
 
   @Column()
@@ -21,13 +22,15 @@ export class Payment {
   @UpdateDateColumn()
   processed_date: Date;
 
-  @Column()
+  @Column('double')
   @Field()
   amount: number;
 
-  @ManyToOne(() => Order)
+  @ManyToOne((type) => Order)
+  @JoinColumn()
   order: Order;
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne((type) => User)
+  @Field((type) => User)
   processed_by: User;
 }

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AccountType } from './enums';
 import { Order } from './order.entity';
@@ -7,7 +7,7 @@ import { Order } from './order.entity';
 @ObjectType()
 export class Customer {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field()
   id: number;
 
   @Column()
@@ -30,9 +30,14 @@ export class Customer {
   @Field()
   phone_number: number;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: AccountType,
+    default: AccountType.CUSTOMER,
+  })
   account_type: AccountType;
 
   @OneToMany(() => Order, (order) => order.customer)
+  @Field((type) => [Order], { nullable: true })
   order: Order[];
 }

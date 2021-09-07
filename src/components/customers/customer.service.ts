@@ -7,6 +7,16 @@ import { Repository } from 'typeorm';
 export class CustomerService {
   constructor(
     @InjectRepository(Customer)
-    private customerService: Repository<Customer>,
+    private customerRepository: Repository<Customer>,
   ) {}
+
+  public async getCustomer(): Promise<Customer[]> {
+    return await this.customerRepository.find({}).catch((err) => {
+      throw new Error('There is a problem fetching data from the server');
+    });
+  }
+
+  // createAccount(customer: Customer) {
+  //   return await this.customerRepository.create(customer);
+  // }
 }

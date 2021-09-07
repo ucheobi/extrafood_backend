@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { menuType } from './enums';
 import { OrderDetails } from './order-details.entity';
@@ -7,7 +7,7 @@ import { OrderDetails } from './order-details.entity';
 @ObjectType()
 export class Menu {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => Int)
   id: number;
 
   @Column()
@@ -18,15 +18,20 @@ export class Menu {
   @Field()
   description: string;
 
-  @Column()
+  @Column('double')
   @Field()
   price: number;
 
-  @Column()
-  @Field()
-  image: string;
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  image?: string;
 
-  @Column('int')
+  @Column({
+    type: 'enum',
+    enum: menuType,
+    default: menuType.BURGER,
+  })
+  @Field()
   menu_type: menuType;
 
   @ManyToOne(() => OrderDetails, (order_detail) => order_detail.menus)
